@@ -1,11 +1,5 @@
-require 'spec_helper'
-
-describe Kase do
-  it 'has a version number' do
+RSpec.describe Kase do
+  it "has a version number" do
     expect(Kase::VERSION).not_to be nil
-  end
-
-  it 'does something useful' do
-    expect(false).to eq(true)
   end
 end
