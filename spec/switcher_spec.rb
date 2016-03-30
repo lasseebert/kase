@@ -120,6 +120,24 @@ module Kase
           end
         }.to raise_error(NoMatchError)
       end
+
+      it "can use local methods inside dsl" do
+        example_class = Class.new do
+          def pattern
+            :ok
+          end
+
+          def call
+            Switcher.new(:ok, "RESULT").switch do
+              on(pattern) { |result| result }
+            end
+          end
+        end
+
+        result = example_class.new.call
+
+        expect(result).to eq("RESULT")
+      end
     end
   end
 end
