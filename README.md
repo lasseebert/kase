@@ -5,6 +5,8 @@ Kase gracefully handles `[status, result]`-like return values from methods.
 It is a tool to avoid using exceptions as flow control and to write safer and
 more readable code.
 
+[![Gem Version](https://badge.fury.io/rb/kase.svg)](https://badge.fury.io/rb/kase)
+
 ## Introduction
 
 The idea is inspired by Elixir in which many functions returns something like
