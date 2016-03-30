@@ -6,6 +6,7 @@ It is a tool to avoid using exceptions as flow control and to write safer and
 more readable code.
 
 [![Gem Version](https://badge.fury.io/rb/kase.svg)](https://badge.fury.io/rb/kase)
+[![Build Status](https://travis-ci.org/lasseebert/kase.svg?branch=master)](https://travis-ci.org/lasseebert/kase)
 
 ## Introduction
 
