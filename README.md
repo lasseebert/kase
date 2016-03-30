@@ -84,10 +84,6 @@ gem "kase", "~> 0.1"
 
 ## Usage
 
-Kase is a module that is meant to be included where you want to use it. The
-module is just a bunch of helper methods, so if you don't like to include
-stuff in your classes, you can use the Kase::Switcher class instead, in which
-the logic is implemented.
 
 ### kase
 
@@ -201,6 +197,56 @@ ok! something do |result|
   handle_result(result)
 end
 ```
+
+### Include or module_function
+
+Kase is a module with helper methods. You can either include it in your own
+class or use the methods as module functions. So both of these will work:
+
+```ruby
+require "kase"
+
+class MyFirstClass
+  include Kase
+
+  def call
+    kase some_result do
+      ...
+    end
+  end
+end
+
+class MySecondClass
+  def call
+    Kase.kase some_result do
+      ...
+    end
+  end
+end
+```
+
+All the logic resides in the Kase::Switcher class which you can use directly if
+you need to:
+
+```ruby
+switcher = Kase::Switcher.new(:ok, "RESULT")
+switcher.on(:ok) { |result| puts result }
+switcher.on(:error) { |message| warn message }
+switcher.validate!
+result = switcher.result
+```
+
+The above is equivalent to:
+
+```ruby
+result = Kase.kase :ok, "RESULT" do
+  on(:ok) { |result| puts result }
+  on(:error) { |message| warn message }
+end
+```
+
+Note that `#kase` is aliased to `#call` so you can use the shorthand
+`Kase.(values)`.
 
 ## Development
 

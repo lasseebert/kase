@@ -7,6 +7,7 @@ module Kase
   def kase(*values, &block)
     Switcher.new(*values).switch(&block)
   end
+  alias_method :call, :kase
 
   def ok!(*values, &block)
     Switcher.new(*values).switch do
