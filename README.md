@@ -274,6 +274,10 @@ To make a pull request:
 3. Implement bugfix or feature
 4. Make pull request
 
+## Contact
+
+Find me on twitter: [@lasseebert](https://twitter.com/lasseebert)
+
 ## License
 
 The gem is available as open source under the terms of the
