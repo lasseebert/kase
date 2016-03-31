@@ -278,6 +278,11 @@ To make a pull request:
 
 Find me on twitter: [@lasseebert](https://twitter.com/lasseebert)
 
+## Alternatives
+
+* [Noadi](https://github.com/katafrakt/noaidi) mimics the functional pattern
+matching of Elixir and might be used as an alternative of Kase.
+
 ## License
 
 The gem is available as open source under the terms of the
