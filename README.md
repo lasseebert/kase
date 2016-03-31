@@ -1,6 +1,6 @@
 # Kase
 
-Kase gracefully handles `[status, result]`-like return values from methods.
+Kase gracefully pattern matches `[:ok, result]`-like return values.
 
 It is a tool to avoid using exceptions as flow control and to write safer and
 more readable code.
@@ -75,7 +75,7 @@ end
 
 This is much more easy to read and reason about.
 
-See below for more a full list of what Kase does.
+See below for a full list of what Kase does.
 
 ## Installation
 
@@ -253,7 +253,7 @@ Note that `#kase` is aliased to `#call` so you can use the shorthand
 
 ## Development
 
-* Install dependencies with `bundle`
+* Install development dependencies with `bundle`
 * Run specs with `bundle exec rspec`
 
 ## Contributing
