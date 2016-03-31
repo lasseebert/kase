@@ -267,12 +267,12 @@ contributors are expected to adhere to the
 
 ### Pull requests
 
-To make a pull request:
+A pull request should consist of
 
-1. Fork the project
-2. Make at least one failing test that proves the bug or describes the feature.
-3. Implement bugfix or feature
-4. Make pull request
+* At least one failing test that proves the bug or documents the feature.
+* The implementation of the bugfix or feature
+* A line in the `CHANGELOG.md` with a description of the change, a link to the pull
+request and a link to your github user.
 
 ## Contact
 
