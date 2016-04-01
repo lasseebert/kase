@@ -9,7 +9,7 @@ module Kase
   end
   alias_method :call, :kase
 
-  def ok!(*values, &block)
+  def ok!(*values, &_block)
     Switcher.new(*values).switch do
       on(:ok) do |*result|
         if block_given?
