@@ -89,9 +89,10 @@ module Kase
 
     describe "#validate!" do
       it "raises NoMatchError if not matched" do
+        values = [:error, :unknown]
         expect {
-          Switcher.new.validate!
-        }.to raise_error(NoMatchError)
+          Switcher.new(values).validate!
+        }.to raise_error(NoMatchError, values.inspect)
       end
 
       it "returns true if matched" do
