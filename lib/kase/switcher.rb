@@ -29,7 +29,7 @@ module Kase
     end
 
     def validate!
-      raise NoMatchError.new(@values) unless matched?
+      raise NoMatchError.new(values) unless matched?
       true
     end
 
