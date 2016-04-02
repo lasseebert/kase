@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Lasse Skindstad Ebert"]
   spec.email         = ["lasse@lasseebert.dk"]
 
-  spec.summary       = %q{A tool to parse [:ok, result]-like return values}
+  spec.summary       = %q{A tool to pattern match [:ok, result]-like return values}
   spec.homepage      = "https://github.com/lasseebert/kase"
   spec.license       = "MIT"
 
