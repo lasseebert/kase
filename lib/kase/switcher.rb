@@ -36,24 +36,37 @@ module Kase
     def switch(&block)
       context = eval("self", block.binding)
       dsl = DSL.new(self, context)
-
-      dsl.instance_eval(&block)
+      dsl.__call(&block)
       validate!
       result
     end
 
     class DSL
       def initialize(switcher, context)
-        @switcher = switcher
-        @context = context
+        @__switcher = switcher
+        @__context = context
+      end
+
+      def __call(&block)
+        @__context.instance_variables.each do |name|
+          next if name.to_s =~ /^@__/
+          instance_variable_set(name, @__context.instance_variable_get(name))
+        end
+
+        instance_eval(&block)
+
+        instance_variables.each do |name|
+          next if name.to_s =~ /^@__/
+          @__context.instance_variable_set(name, instance_variable_get(name))
+        end
       end
 
       def on(*args, &block)
-        @switcher.on(*args, &block)
+        @__switcher.on(*args, &block)
       end
 
       def method_missing(method, *args, &block)
-        @context.send(method, *args, &block)
+        @__context.send(method, *args, &block)
       end
     end
   end

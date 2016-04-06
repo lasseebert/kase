@@ -139,6 +139,32 @@ module Kase
 
         expect(result).to eq("RESULT")
       end
+
+      it "can set local instance variables inside on block" do
+        Switcher.new(:ok, "RESULT").switch do
+          on(:ok) { |result| @result = result }
+        end
+
+        expect(@result).to eq("RESULT")
+      end
+
+      it "can use local instance variables inside on block" do
+        @result = "RESULT"
+        value = Switcher.new(:ok).switch do
+          on(:ok) { @result }
+        end
+
+        expect(value).to eq("RESULT")
+      end
+
+      it "can read local variables inside on block" do
+        value = "RESULT"
+        result = Switcher.new(:ok).switch do
+          on(:ok) { value }
+        end
+
+        expect(result).to eq("RESULT")
+      end
     end
   end
 end
