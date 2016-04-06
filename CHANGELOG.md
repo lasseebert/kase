@@ -2,6 +2,10 @@
 
 * (Your contributions here)
 
+# Version 0.1.2 (2016-04-06)
+
+* Fixed instance variables lookup inside DSL, [#4](https://github.com/lasseebert/kase/issues/4), [lasseebert](https://github.com/lasseebert)
+
 # Version 0.1.1 (2016-04-02)
 
 * Added error message to NoMatchError, [hosh](https://github.com/hosh)
