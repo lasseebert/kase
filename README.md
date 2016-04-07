@@ -222,6 +222,9 @@ class MySecondClass
 end
 ```
 
+Note that `#kase` is aliased to `#call` so you can use the shorthand
+`Kase.(values)`.
+
 All the logic resides in the Kase::Switcher class which you can use directly if
 you need to:
 
@@ -241,9 +244,6 @@ result = Kase.kase :ok, "RESULT" do
   on(:error) { |message| warn message }
 end
 ```
-
-Note that `#kase` is aliased to `#call` so you can use the shorthand
-`Kase.(values)`.
 
 ## Development
 
@@ -265,8 +265,8 @@ A pull request should consist of
 
 * At least one failing test that proves the bug or documents the feature.
 * The implementation of the bugfix or feature
-* A line in the `CHANGELOG.md` with a description of the change, a link to the pull
-request and a link to your github user.
+* A line in the `CHANGELOG.md` with a description of the change, a link to your
+github user and, if this closes or references an issue, a link to the issue.
 
 ## Contact
 
