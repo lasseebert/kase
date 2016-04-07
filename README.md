@@ -16,28 +16,24 @@ The idea is inspired by Elixir in which many functions returns something like
 In Ruby we would usually handle those kind of return values like this:
 
 ```ruby
-class Orders
-  def process(cart)
-    status, result, message = complete_order(cart)
+status, result, message = complete_order(cart)
 
-    case status
-    when :ok
-      order = result
-      process_order(order)
-    when :error
-      error_kind = result
-      case error_kind
-      when :not_found
-        [404, {}, "Not found"]
-      when :invalid_state
-        [400, {}, "Invalid request: #{message}"]
-      else
-        raise "Unhandled error kind: #{error_kind}"
-      end
-    else
-      raise "Unhandles status: #{status}"
-    end
+case status
+when :ok
+  order = result
+  process_order(order)
+when :error
+  error_kind = result
+  case error_kind
+  when :not_found
+    [404, {}, "Not found"]
+  when :invalid_state
+    [400, {}, "Invalid request: #{message}"]
+  else
+    raise "Unhandled error kind: #{error_kind}"
   end
+else
+  raise "Unhandles status: #{status}"
 end
 ```
 
@@ -50,25 +46,17 @@ handled that specific status or error_kind).
 With Kase we can do this instead, which is equivalent to the above:
 
 ```ruby
-require "kase"
+kase complete_order(cart) do
+  on :ok do |order|
+    process_order(order)
+  end
 
-class Orders
-  include Kase
+  on :error, :not_found do
+    [404, {}, "Not found"]
+  end
 
-  def process(cart)
-    kase complete_order(cart) do
-      on :ok do |order|
-        process_order(order)
-      end
-
-      on :error, :not_found do
-        [404, {}, "Not found"]
-      end
-
-      on :error, :invalid_state do |message|
-        [400, {}, "Invalid request: #{message}"]
-      end
-    end
+  on :error, :invalid_state do |message|
+    [400, {}, "Invalid request: #{message}"]
   end
 end
 ```
@@ -112,7 +100,9 @@ pattern. E.g. if `[:ok, "THE RESULT"]` is matched with `on(:ok, &block)`,
 #### Simple examples:
 
 ```ruby
-kase process_order do
+require "kase"
+
+Kase.kase process_order do
   on :ok do
     puts "Great success!"
   end
@@ -140,7 +130,9 @@ than one value is returned.
 All values that are not part of the pattern will be yielded to the given block:
 
 ```ruby
-kase process_order do
+require "kase"
+
+Kase.kase process_order do
   on :ok do |order|
     puts "Great success: #{order.inspect}"
   end
@@ -159,6 +151,8 @@ be able to catch and use the values.
 We can match on multiple values, but only from the left:
 
 ```ruby
+require "kase"
+
 kase process_order do
   on :ok do |order|
     puts "Great success: #{order.inspect}"
