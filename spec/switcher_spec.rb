@@ -165,6 +165,32 @@ module Kase
 
         expect(result).to eq("RESULT")
       end
+
+      it "does not leak DSL on method" do
+        Switcher.new(:ok).switch do
+          on(:ok) { 42 }
+        end
+
+        expect { on }.to raise_error(NameError)
+      end
+
+      it "does not overwrite on method" do
+        klass = Class.new do
+          def on
+            "original"
+          end
+
+          def call
+            Switcher.new(:ok).switch do
+              on(:ok) { 42 }
+            end
+          end
+        end
+        instance = klass.new
+        instance.call
+
+        expect(instance.on).to eq("original")
+      end
     end
   end
 end

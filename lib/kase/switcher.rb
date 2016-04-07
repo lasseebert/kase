@@ -34,39 +34,30 @@ module Kase
     end
 
     def switch(&block)
-      context = eval("self", block.binding)
-      dsl = DSL.new(self, context)
-      dsl.__call(&block)
+      DSL.call(self, &block)
       validate!
       result
     end
 
-    class DSL
-      def initialize(switcher, context)
-        @__switcher = switcher
-        @__context = context
-      end
+    module DSL
+      module_function
 
-      def __call(&block)
-        @__context.instance_variables.each do |name|
-          next if name.to_s =~ /^@__/
-          instance_variable_set(name, @__context.instance_variable_get(name))
+      def call(switcher, &block)
+        context = eval("self", block.binding)
+
+        # Preserve original on method
+        original_on = context.method(:on) if defined? context.on
+
+        # Define new on method
+        context.define_singleton_method(:on) do |*pattern, &block|
+          switcher.on(*pattern, &block)
         end
 
-        instance_eval(&block)
+        block.call
 
-        instance_variables.each do |name|
-          next if name.to_s =~ /^@__/
-          @__context.instance_variable_set(name, instance_variable_get(name))
-        end
-      end
-
-      def on(*args, &block)
-        @__switcher.on(*args, &block)
-      end
-
-      def method_missing(method, *args, &block)
-        @__context.send(method, *args, &block)
+        # Replace original :on
+        context.instance_eval { undef :on }
+        context.define_singleton_method(:on, original_on) if original_on
       end
     end
   end
