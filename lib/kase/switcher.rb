@@ -49,8 +49,8 @@ module Kase
         original_on = context.method(:on) if defined? context.on
 
         # Define new on method
-        context.define_singleton_method(:on) do |*pattern, &block|
-          switcher.on(*pattern, &block)
+        context.define_singleton_method(:on) do |*pattern, &inner_block|
+          switcher.on(*pattern, &inner_block)
         end
 
         block.call
