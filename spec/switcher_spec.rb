@@ -191,6 +191,24 @@ module Kase
 
         expect(instance.on).to eq("original")
       end
+
+      it "can use original :on method inside on block" do
+        klass = Class.new do
+          def on
+            "original"
+          end
+
+          def call
+            Switcher.new(:ok).switch do
+              on(:ok) { on }
+            end
+          end
+        end
+        instance = klass.new
+        result = instance.call
+
+        expect(result).to eq("original")
+      end
     end
   end
 end

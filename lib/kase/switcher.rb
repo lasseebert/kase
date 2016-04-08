@@ -44,20 +44,35 @@ module Kase
 
       def call(switcher, &block)
         context = eval("self", block.binding)
+        original_on_method = context.method(:on) if defined? context.on
+        new_on_method = nil
 
-        # Preserve original on method
-        original_on = context.method(:on) if defined? context.on
-
-        # Define new on method
+        # Define a new :on method for the caller context
         context.define_singleton_method(:on) do |*pattern, &inner_block|
-          switcher.on(*pattern, &inner_block)
+
+          new_inner_block = proc do |*args|
+            # Use the original :on method inside the inner blocks
+            DSL.set_on_method(context, original_on_method)
+            result = inner_block.call(*args)
+            DSL.set_on_method(context, new_on_method)
+            result
+          end
+
+          switcher.on(*pattern, &new_inner_block)
         end
+        new_on_method = context.method(:on)
 
         block.call
+      ensure
+        DSL.set_on_method(context, original_on_method)
+      end
 
-        # Replace original :on
-        context.instance_eval { undef :on }
-        context.define_singleton_method(:on, original_on) if original_on
+      def set_on_method(context, method)
+        if method
+          context.define_singleton_method(:on, method)
+        else
+          context.instance_eval { undef :on }
+        end
       end
     end
   end
