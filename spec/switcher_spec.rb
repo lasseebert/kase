@@ -209,6 +209,14 @@ module Kase
 
         expect(result).to eq("original")
       end
+
+      it "handles errors" do
+        expect {
+          Switcher.new(:ok).switch do
+            on(:ok) { raise "BOOM" }
+          end
+        }.to raise_error(/BOOM/)
+      end
     end
   end
 end

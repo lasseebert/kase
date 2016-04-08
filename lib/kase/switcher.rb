@@ -71,7 +71,7 @@ module Kase
         if method
           context.define_singleton_method(:on, method)
         else
-          context.instance_eval { undef :on }
+          context.instance_eval { undef :on if defined? on }
         end
       end
     end
