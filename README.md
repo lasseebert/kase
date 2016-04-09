@@ -195,6 +195,20 @@ ok! something do |result|
 end
 ```
 
+Or this:
+
+```ruby
+result = kase something do
+  on(:ok) { |result| result }
+end
+```
+
+To this:
+
+```ruby
+result = ok! something
+```
+
 ### Include or module_function
 
 Kase is a module with helper methods. You can either include it in your own
