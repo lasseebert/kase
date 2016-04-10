@@ -34,39 +34,45 @@ module Kase
     end
 
     def switch(&block)
-      context = eval("self", block.binding)
-      dsl = DSL.new(self, context)
-      dsl.__call(&block)
+      DSL.call(self, &block)
       validate!
       result
     end
 
-    class DSL
-      def initialize(switcher, context)
-        @__switcher = switcher
-        @__context = context
-      end
+    module DSL
+      module_function
 
-      def __call(&block)
-        @__context.instance_variables.each do |name|
-          next if name.to_s =~ /^@__/
-          instance_variable_set(name, @__context.instance_variable_get(name))
+      def call(switcher, &block)
+        context = eval("self", block.binding)
+        original_on_method = context.method(:on) if defined? context.on
+        new_on_method = nil
+
+        # Define a new :on method for the caller context
+        context.define_singleton_method(:on) do |*pattern, &inner_block|
+
+          new_inner_block = proc do |*args|
+            # Use the original :on method inside the inner blocks
+            DSL.set_on_method(context, original_on_method)
+            result = inner_block.call(*args)
+            DSL.set_on_method(context, new_on_method)
+            result
+          end
+
+          switcher.on(*pattern, &new_inner_block)
         end
+        new_on_method = context.method(:on)
 
-        instance_eval(&block)
+        block.call
+      ensure
+        DSL.set_on_method(context, original_on_method)
+      end
 
-        instance_variables.each do |name|
-          next if name.to_s =~ /^@__/
-          @__context.instance_variable_set(name, instance_variable_get(name))
+      def set_on_method(context, method)
+        if method
+          context.define_singleton_method(:on, method)
+        else
+          context.instance_eval { undef :on if defined? on }
         end
-      end
-
-      def on(*args, &block)
-        @__switcher.on(*args, &block)
-      end
-
-      def method_missing(method, *args, &block)
-        @__context.send(method, *args, &block)
       end
     end
   end

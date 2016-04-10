@@ -1,5 +1,8 @@
 # Next
 
+* Simpler and safer DSL that runs in the context of the calling code,
+[#6](https://github.com/lasseebert/kase/issues/6),
+[lasseebert](https://github.com/lasseebert) and [hosh](https://github.com/hosh)
 * (Your contributions here)
 
 # Version 0.1.2 (2016-04-06)
