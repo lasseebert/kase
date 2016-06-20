@@ -290,6 +290,7 @@ Find me on twitter: [@lasseebert](https://twitter.com/lasseebert)
 
 * [Noadi](https://github.com/katafrakt/noaidi) mimics the functional pattern
 matching of Elixir and might be used as an alternative of Kase.
+* [happy](https://github.com/vic/happy) the alchemist's happy path with elixir.
 
 ## License
 
