@@ -1,5 +1,7 @@
 # Kase
 
+**NOTE**: This repo is no longer maintained.
+
 Kase gracefully pattern matches `[:ok, result]`-like return values.
 
 It is a tool to avoid using exceptions as flow control and to write safer and
